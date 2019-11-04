@@ -35,27 +35,27 @@
                             :sort-direction="sortDirection"
                             @filtered="onFiltered"
                         >
-                            <template slot="name" slot-scope="row">
+                            <template v-slot:cell(name)="row">
                                 {{ row.value }}
                             </template>
 
-                            <template slot="position" slot-scope="row">
+                            <template v-slot:cell(position)="row">
                                 {{ row.value }}
                             </template>
 
-                            <template slot="belbin" slot-scope="row">
+                            <template v-slot:cell(belbin)="row">
                                 {{ row.value.name }}
                             </template>
 
-                            <template slot="mbti" slot-scope="row">
+                            <template v-slot:cell(mbti)="row">
                                 {{ row.value.code }}
                             </template>
 
-                            <template slot="enneagram" slot-scope="row">
+                            <template v-slot:cell(enneagram)="row">
                                 {{ row.value.name }}
                             </template>                          
 
-                            <template slot="actions" slot-scope="row">                                                
+                            <template v-slot:cell(actions)="row">                                                
                                 <b-button :variant=" row.detailsShowing ? 'info' : 'outline-info'" size="sm" @click="row.toggleDetails">
                                     <font-awesome-icon icon="info-circle"></font-awesome-icon>
                                 </b-button>
