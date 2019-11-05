@@ -23,7 +23,13 @@
                                      <label> {{ a.answerText }} </label>
                                 </b-col>
                                 <b-col sm="2">
-                                    <b-form-input v-model="a.points" type="number" :max="q.remainingPoints" min="0" @focusout="onFocusOut($event, q.questionId)" @focus="onFocusIn($event, q.questionId)" @keydown="onKeyUp" @keypress="onKeyUp" @keyup="onKeyUp"></b-form-input>
+                                    <b-button :disabled="a.points === 0" @click="subtract(q.questionId, a.answerId)" variant="light" size="sm">
+                                        <font-awesome-icon icon="minus-circle"></font-awesome-icon>
+                                    </b-button>
+                                    <span class="mx-2"> {{ a.points }} </span>                                    
+                                    <b-button :disabled="a.points === 10 || q.remainingPoints <= 0" @click="add(q.questionId, a.answerId)" variant="light" size="sm">
+                                        <font-awesome-icon icon="plus-circle"></font-awesome-icon>
+                                    </b-button>
                                 </b-col>
                             </b-row>
                         </b-card-text>
@@ -37,7 +43,7 @@
                     <b-card title="" header-tag="" footer-tag="">
                         <b-card-text>        
                             <b-button @click="resetForm" variant="warning float-left"><font-awesome-icon icon="undo-alt"></font-awesome-icon> Reset Test</b-button>                  
-                            <b-button @click="saveForm" :disabled="!formValid" variant="primary float-right"><font-awesome-icon icon="share-square"></font-awesome-icon> End Test</b-button>                                
+                            <b-button @click="saveForm" v-b-tooltip.hover :title="!formValid ? 'You must alocate all points in each question' : '' " :disabled="!formValid" variant="primary float-right"><font-awesome-icon icon="share-square"></font-awesome-icon> End Test</b-button>                                
                         </b-card-text>
                     </b-card>
                 </b-col>
@@ -67,7 +73,7 @@ export default {
     data() {
         return {
             questions: [],
-            formValid: true,
+            formValid: false,
             belbinFirstRole: "",
             belbinSecondRole: "",
         }
@@ -75,20 +81,26 @@ export default {
     methods: {
         ...mapActions(["setUserBeblinSequance", "addUserBelbin", "computeBelbinRole"]),
 
-        onKeyUp(e) {
-            if (typeof(e) === "object"){
-                e.preventDefault();
-            }            
+        subtract(key, aId) {
+            this.questions[key-1].remainingPoints += 1;
+            this.questions[key-1].answers[(aId-1) % 8].points -= 1;
+            this.checkForm();
         },
 
-        onFocusIn(e, key){
-            let value = e.target.value;           
-            this.questions[key-1].remainingPoints += parseInt(value);
+        add(key, aId) {
+            this.questions[key-1].remainingPoints -= 1;
+            this.questions[key-1].answers[(aId-1) % 8].points += 1;
+            this.checkForm();
         },
 
-        onFocusOut(e, key){
-            let value = e.target.value;            
-            this.questions[key-1].remainingPoints -= parseInt(value);
+        checkForm() {
+            this.questions.some((q, i) => {
+                this.formValid = true;
+                if (q.remainingPoints !== 0){
+                    this.formValid = false;
+                    return q.remainingPoints !== 0;
+                }
+            });
         },
 
         saveForm(){
@@ -118,7 +130,13 @@ export default {
         },
 
         resetForm(){
-            
+            this.formValid = false;
+            this.questions.forEach((q, i) => {
+                q.remainingPoints = 10;
+                q.answers.forEach(a => {
+                    a.points = 0;
+                });
+            });
         }
     },
     computed: {
@@ -194,6 +212,17 @@ export default {
 
 .testColor {
     color: #ffc107;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
 }
 
 </style>

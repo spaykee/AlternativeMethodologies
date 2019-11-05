@@ -22,7 +22,9 @@
                                 <b-col sm="6" v-for="(q, key) in questions" :key="key">
                                     <b-form-group>
                                         <template slot="label"><span style="color: #0e577f;"> <b>{{ q.questionText }}.</b></span></template>                                       
-                                        <b-form-radio class="ml-4" @change="checkForm" v-for="(a, j) in q.answers" :key="j" v-model="q.selectedAnswerId" :name="'answer-'+key+'-'+'j'" :value="a.answerId">{{a.answerText}}</b-form-radio>                                                                                
+                                        <b-form-radio class="ml-4" @input="checkForm" v-for="(a, j) in q.answers" :key="j" v-model="q.selectedAnswerId" :name="'answer-'+key+'-'+'j'" :value="a.answerId">
+                                            <span class="pointer">{{a.answerText}}</span>                                                 
+                                        </b-form-radio>                                                                                
                                     </b-form-group>
                                 </b-col>                                 
                             </b-row>
@@ -36,7 +38,7 @@
                     <b-card title="" header-tag="" footer-tag="">
                         <b-card-text>        
                             <b-button @click="resetForm" variant="warning float-left"><font-awesome-icon icon="undo-alt"></font-awesome-icon> Reset Test</b-button>                  
-                            <b-button @click="saveForm" :disabled="!formValid" variant="primary float-right"><font-awesome-icon icon="share-square"></font-awesome-icon> End Test</b-button>                                
+                            <b-button @click="saveForm" v-b-tooltip.hover :title="!formValid ? 'You must answer all questions' : '' " :disabled="!formValid" variant="primary float-right"><font-awesome-icon icon="share-square"></font-awesome-icon> End Test</b-button>                                
                         </b-card-text>
                     </b-card>
                 </b-col>
@@ -101,6 +103,7 @@ export default {
 
                 this.questions.push(question);
             });
+            this.formValid = false;
         },
         saveForm() {
            if (this.formValid){
@@ -127,11 +130,11 @@ export default {
             }
         },
         checkForm(){
-            this.questions.forEach(q => {
+            this.questions.some(q => {
+                this.formValid = true;
                 if(q.selectedAnswerId === 0){
                     this.formValid = false;
-                } else {
-                    this.formValid = true;
+                    return q.selectedAnswerId === 0;
                 }
             });
         }
@@ -202,6 +205,10 @@ export default {
 
 .testColor {
     color: #dc3545;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 </style>
