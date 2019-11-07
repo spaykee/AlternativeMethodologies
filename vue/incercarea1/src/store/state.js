@@ -19,11 +19,11 @@ import zodiacAscendants from "@/data/zodiacAscendants";
 import teams from "@/data/teams";
 
 
-import loginUser from "@/data/login";
+//import loginUser from "@/data/login";
 
 export default {
     users,
-    loginUser,
+    loginUser: {},
     globalError: "",
     beforePath: "/",
     toast: {},
@@ -59,4 +59,8 @@ export default {
     userError: false,
     codeError: false,
     isUserAdded: false,
+    loginUserError: false,
+    loginPassError: false,
+    loginSuccess: false,
+    token: "",
 }

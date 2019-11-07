@@ -108,7 +108,7 @@ const router = new Router({
       component: EditUser,
       meta: { requiresLogin: true }
     },{
-      path: "/testResults",
+      path: "/testResults/",
       name: "testResults",
       component: TestResults,
       meta: { requiresLogin: true }
@@ -121,7 +121,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const bp = to.name !== "login" ? to.path : store.state.beforePath;
 
-  if (to.matched.some(record => record.meta.requiresLogin) && Object.keys(store.state.loginUser).length === 0) {
+  if (to.matched.some(record => record.meta.requiresLogin) && localStorage.getItem("token") === null) {
       store.commit("setGlobalError", "You need to log in before you can perform this action.")
       store.commit("setBeforeRouterPath", bp)
       next("/login")

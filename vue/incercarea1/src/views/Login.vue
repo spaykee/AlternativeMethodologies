@@ -7,13 +7,13 @@
                         <b-form @submit.prevent="checkForm">
                             <label for="feedback-user">Username</label>
                             <b-input v-model="username" id="feedback-user"></b-input>
-                            <b-form-invalid-feedback :state="userError">
+                            <b-form-invalid-feedback :state="!loginUserError">
                                 This username does not exist.
                             </b-form-invalid-feedback>
 
                             <label for="text-password">Password</label>
                             <b-input type="password" v-model="password" id="text-password" aria-describedby="password-help-block"></b-input>
-                            <b-form-invalid-feedback :state="passError">
+                            <b-form-invalid-feedback :state="!loginPassError">
                                 Wrong password
                             </b-form-invalid-feedback>
 
@@ -42,13 +42,32 @@
       return {
         username: '',
         password: '',
-        userError: true,
-        passError: true,
         formState: false
       }
     },
     computed: {
-      ...mapGetters(["getAllUsers", "getLoginUser", "getBeforeRouterPath", "getToast"]),
+      ...mapGetters(["getAllUsers", "getLoginUser", "getBeforeRouterPath", "getToast", "loginPassError", "loginUserError", "loginSuccess", "token"]),
+    },
+    watch: {
+        loginSuccess: function(val) {
+            this.changeToast({
+                text: `Welcome ${this.username}!`,
+                title: "Loged in successfull!",
+                autoHideDelay: 5000,
+                variant: "success",
+                solid: true,
+                toaster: "b-toaster-top-full"
+            });     
+
+            localStorage.setItem('token', this.token);
+
+             if (localStorage.getItem("token") !== null && Object.entries(this.getLoginUser).length === 0 && this.getLoginUser.constructor === Object) {
+                this.setLoginUser(localStorage.getItem("token"));
+            }
+
+            this.$router.push({path: this.getBeforeRouterPath});
+            this.setLoginSuccess(false);
+        }
     },
     mounted() {        
         const toast = this.getToast;
@@ -64,40 +83,12 @@
         this.clearToaster();
     },
     methods: {
-        ...mapActions(["login", "clearToaster"]),
-        checkForm(){
-            const users = this.getAllUsers
-            let userNamesArray = [];
-            let userPassArray = [];
+        ...mapActions(["login", "clearToaster", "setLoginSuccess", "changeToast", "setLoginUser"]),
+        checkForm(){            
+            this.formState = this.username.length !== 0 && this.password.length !== 0;
 
-            users.forEach(user => {
-                userNamesArray.push(user.username);
-                userPassArray.push(user.password);
-            });
-
-            this.userError = userNamesArray.includes(this.username);
-
-            this.passError = !this.userError || userPassArray.includes(this.password);
-            this.password = "";
-
-            this.formState = this.userError && this.passError;
-
-            if(this.formState){
-                const filteredUser = users.filter(user => {
-                    return user.username == this.username ? user : null;
-                })
-
-                this.login(filteredUser[0]);
-
-                this.$bvToast.toast(`Welcome ${this.username}!`, {
-                    title: "Loged in successfull!",
-                    autoHideDelay: 3000,
-                   variant: "success",
-                    solid: true,
-                    toaster: "b-toaster-top-full"
-                });     
-
-                this.$router.push({path: this.getBeforeRouterPath});
+            if(this.formState){  
+                this.login({ username: this.username, password: this.password });               
             }
         }
     }

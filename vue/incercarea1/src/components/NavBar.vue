@@ -75,12 +75,16 @@
 import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
 
-export default {
-   mounted(){
-    //    console.log(this.$route);
-   },
-   computed: {
-       checkTestsActiveRoute() {
+export default {    
+    mounted() {
+        if (localStorage.getItem("token") !== null && Object.entries(this.getLoginUser).length === 0 && this.getLoginUser.constructor === Object) {
+            this.setLoginUser(localStorage.getItem("token"));
+        }
+    },
+    computed: {
+       ...mapGetters(["getLoginUser"]),        
+
+        checkTestsActiveRoute() {
            switch(this.$route.name){
                case "testBelbin" :
                    return true;
@@ -136,14 +140,13 @@ export default {
                     break;      
             }
         },
-
-       ...mapGetters(["getLoginUser"])
    },
    methods: {
-       ...mapActions(["logout"]),
+       ...mapActions(["logout", "setLoginUser"]),
        logOut(){
+           localStorage.clear();
            this.logout();
-       }
+       },
    }
 }
 </script>

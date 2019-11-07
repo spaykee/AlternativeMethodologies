@@ -26,6 +26,10 @@ export default {
     userError: (state) => state.userError,
     codeError: (state) => state.codeError,
     isUserAdded: (state) => state.isUserAdded,
+    loginUserError: (state) => state.loginUserError,
+    loginPassError: (state) => state.loginPassError,
+    loginSuccess: (state) => state.loginSuccess,
+    token: (state) => state.token,
 
     getUserBelbinSequance: (state) => state.userBelbinSequance,
     getUserMbtiSequance: (state) => state.userMbtiSequance,

@@ -1,6 +1,5 @@
 export default {
     login: (state, user) => {
-        console.log(user);
         state.loginUser = user;
     },
     logout: (state) => {
@@ -18,9 +17,25 @@ export default {
         state.codeError = codeExists;
     },
 
+    changeloginUserError: (state, status) => {
+        state.loginUserError = status;
+    },
+
+    changeloginPassError: (state, status) => {
+        state.loginPassError = status;
+    },
+
     setIsUserAdded: (state, isUserAdded) => {
         state.isUserAdded = isUserAdded;
     },    
+
+    setLoginSuccess: (state, status) => {
+        state.loginSuccess = status;
+    },  
+    
+    setToken: (state, token) => {
+        state.token = token;
+    },
 
     updateUser: (state, user) => {
         state.users.filter(su => su.id === user.id)[0] = user;

@@ -19,6 +19,9 @@ app.use("/api/checkEmployerCode", cors(corsOptions), require("./routes/checkEmpl
 
 app.use("/api/login", cors(corsOptions), require("./routes/login"));
 
+//get Loged in user
+app.use("/api/getLoginUser", cors(corsOptions), require("./routes/getLoginUser"));
+
 // get zodiac
 app.use("/api/getZodiac", cors(corsOptions), require("./routes/zodiac"));
 // get numerology

@@ -3,27 +3,41 @@ import axios from "axios";
 
 export default {
     login: ({commit}, user) => {
-        var userToSend = {
-            username: user.username,
-            password: user.password
-        }
-
-        axios.post("http://localhost:5000/api/login", userToSend).then(res => {
-            console.log(res)
+        axios.post("http://localhost:5000/api/login", user).then(res => {
+            let { msg } = res.data;
+            if (msg === "userError") {
+                commit("changeloginUserError", true);
+            } else if (msg === "passError") {
+                commit("changeloginPassError", true);
+            } else if (msg === "loginSuccess") {
+                commit("setToken", res.data.token);
+                commit("setLoginSuccess", true);
+            }
         }).catch(err => {
             console.log(err)
         })
-
-        commit("login", user);
     },
 
     logout: ({commit}) => {
         commit("logout");
+        commit("setToken", "");        
         router.push("/login");
+    },
+
+    setLoginUser: ({commit}, token) => {
+        axios.get("http://localhost:5000/api/getLoginUser", {headers: {token: token}}).then(res => {
+            commit("login", res.data);
+        }).catch(err => {
+            console.log(err)
+        })        
     },
 
     setIsUserAdded: ({commit}, isUserAdded) => {       
         commit("setIsUserAdded", isUserAdded);       
+    },
+
+    setLoginSuccess: ({commit}, status) => {       
+        commit("setLoginSuccess", status);       
     },
 
     checkUsernameExists: ({commit}, username) => {
@@ -59,7 +73,6 @@ export default {
     setNewDataset: ({commit, dispatch}, dataSet) => {
         axios.post("http://localhost:5000/api/createDataset", dataSet).then(res => {
             commit("setIsUserAdded", true);
-            console.log("gata cu crearea de useri");
         }).catch(err => {
             console.log(err)
         })

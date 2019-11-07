@@ -169,6 +169,11 @@ export default {
         hour: "",
         minuteOptions: ["00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"],
         minute: "",
+
+        allCapsAlpha: [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"],
+        allLowerAlpha: [..."abcdefghijklmnopqrstuvwxyz"],
+        allUniqueChars: [..."~!@#$%^&*()_+-=[]{}|;:',./<>?"],
+        allNumbers: [..."0123456789"]
       }
     },
      computed: {
@@ -206,6 +211,14 @@ export default {
         this.userError = userNamesArray.includes(this.username);
       },
 
+      codeGenerator(len) {
+        const base = [...this.allCapsAlpha, ...this.allNumbers, ...this.allLowerAlpha, ...this.allUniqueChars];
+
+        return [...Array(len)]
+          .map(i => base[Math.random()*base.length|0])
+          .join('');
+      },
+
       checkForm(){  
             const date = this.year + "/" + this.month + "/" + this.day;
             const time = this.hour !== "" && this.minute !== "" ? this.hour + ":" + this.minute : ""; 
@@ -221,7 +234,7 @@ export default {
                 password: this.password,
                 firstName: this.firstName,
                 lastName: this.lastName,
-                code: "",
+                code: this.codeGenerator(32),
                 employerCode: this.code,
                 company: this.company,
                 phone: this.phone,
@@ -247,7 +260,7 @@ export default {
           this.changeToast({
             text: "Register successfull!",
             title: "You have register successfully! All you have to do is log in now!",
-            autoHideDelay: 3000,
+            autoHideDelay: 5000,
             variant: "success",
             solid: true,
             toaster: "b-toaster-top-full",

@@ -54,21 +54,26 @@ import { mapActions } from 'vuex';
 export default {
   name: "home",
   computed: {
-    ...mapGetters(["getAllUserDatasets"]),
+    ...mapGetters(["getLoginUser", "getToast"]),
   },
   methods: {
-    ...mapActions(["computeBelbinRole", "computeMbtiType", "computeEnneagramType", "computeZodiac", "computeZodiacAscendants", "computeNumerology"]),
+    ...mapActions(["setLoginUser", "clearToaster"]),
   },
   mounted() {
-    // this.computeBelbinRole();
-    // this.computeMbtiType();
-    // this.computeEnneagramType();
-    // this.computeZodiac();
-    // this.computeZodiacAscendants();
-    // this.computeNumerology();
+    const toast = this.getToast;
 
-    // console.log(this.getAllUserDatasets);
-
+    this.$bvToast.toast(toast.text, {
+        title: toast.title,
+        autoHideDelay: toast.autoHideDelay,
+        variant: toast.variant,
+        solid: toast.solid,
+        toaster: toast.toaster,
+    });     
+    
+    this.clearToaster();
+    // if (localStorage.getItem("token") !== null && Object.entries(this.getLoginUser).length === 0 && this.getLoginUser.constructor === Object) {
+    //   this.setLoginUser(localStorage.getItem("token"));
+    // }
   }  
 };
 </script>
