@@ -61,7 +61,7 @@
                 hide-footer
               >
                 <p class="lead">
-                  <b>Objective :</b> To explore external resources and develop contacts on behalf of the team.
+                  <b>Objective:</b> To explore external resources and develop contacts on behalf of the team.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -132,8 +132,8 @@
                 >Details</b-button>
               </template>
               <b-modal id="teamworker" size="lg" title="Teamworker" hide-footer>
-                <p class>
-                  <b>Objective</b> To support others, and promote harmony and unity within the team.
+                <p class="lead">
+                  <b>Objective:</b> To support others, and promote harmony and unity within the team.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -202,7 +202,7 @@
               </template>
               <b-modal id="coordinator" size="lg" title="Co-ordinator" hide-footer>
                 <p class>
-                  <b>Objective</b> To combine the team’s efforts, promote consensus and manage talent.
+                  <b>Objective:</b> To combine the team’s efforts, promote consensus and manage talent.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -278,7 +278,7 @@
               </template>
               <b-modal id="plant" size="lg" title="Plant" hide-footer>
                 <p class>
-                  <b>Objective</b> To act as a prime source of innovation and ideas for the team.
+                  <b>Objective:</b> To act as a prime source of innovation and ideas for the team.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -349,8 +349,8 @@
                 >Details</b-button>
               </template>
               <b-modal id="monitor-evaluator" size="lg" title="Monitor Evaluator" hide-footer>
-                <p class>
-                  <b>Objective</b> To analyse ideas and suggestions, and evaluate their feasibility.
+                <p class="lead">
+                  <b>Objective:</b> To analyse ideas and suggestions, and evaluate their feasibility.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -421,8 +421,8 @@
                 >Details</b-button>
               </template>
               <b-modal id="specialist" size="lg" title="Specialist" hide-footer>
-                <p class>
-                  <b>Objective</b> To provide in-depth knowledge on a particular subject.
+                <p class="lead">
+                  <b>Objective:</b> To provide in-depth knowledge on a particular subject.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -500,8 +500,8 @@
                 >Details</b-button>
               </template>
               <b-modal id="shaper" size="lg" title="Shaper" hide-footer>
-                <p class>
-                  <b>Objective</b> To challenge and drive the team forward to achieve its goals and objectives.
+                <p class="lead">
+                  <b>Objective:</b> To challenge and drive the team forward to achieve its goals and objectives.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -575,8 +575,8 @@
                 >Details</b-button>
               </template>
               <b-modal id="implementer" size="lg" title="Implementer" hide-footer>
-                <p class>
-                  <b>Objective</b> To translate concepts and plans into a working brief, and carry it out.
+                <p class="lead">
+                  <b>Objective:</b> To translate concepts and plans into a working brief, and carry it out.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -646,8 +646,8 @@
                 >Details</b-button>
               </template>
               <b-modal id="completer-finisher" size="lg" title="Completer Finisher" hide-footer>
-                <p class>
-                  <b>Objective</b> To correct mistakes and ensure that important details are not overlooked.
+                <p class="lead">
+                  <b>Objective:</b> To correct mistakes and ensure that important details are not overlooked.
                 </p>
                 <b-tabs content-class="mt-2 text-justify" pills vertical small>
                   <b-tab title="Strengths" style="text-indent: 40px;" active>
@@ -715,6 +715,7 @@ export default {
 #about-belbin {
   height: 85vh;
   overflow: auto;
+  padding: 0 20px;
   p {
     text-align: justify;
   }
