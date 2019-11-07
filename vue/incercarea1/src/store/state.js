@@ -56,5 +56,7 @@ export default {
     mbtiCompleted: false,
     enneagramCompleted: false,
 
-
+    userError: false,
+    codeError: false,
+    isUserAdded: false,
 }

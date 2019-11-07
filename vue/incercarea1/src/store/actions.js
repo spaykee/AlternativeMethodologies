@@ -1,16 +1,174 @@
 import router from "@/router";
+import axios from "axios";
 
 export default {
     login: ({commit}, user) => {
+        var userToSend = {
+            username: user.username,
+            password: user.password
+        }
+
+        axios.post("http://localhost:5000/api/login", userToSend).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
+
         commit("login", user);
     },
+
     logout: ({commit}) => {
         commit("logout");
         router.push("/login");
     },
 
-    addUser: ({commit}, user) => {
+    setIsUserAdded: ({commit}, isUserAdded) => {       
+        commit("setIsUserAdded", isUserAdded);       
+    },
+
+    checkUsernameExists: ({commit}, username) => {
+        axios.post("http://localhost:5000/api/checkUsername", { username: username }).then(res => {
+            commit("changeUsernameError", res.data.userExists);
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
+    checkEmployerCode: ({commit}, code) => {
+        axios.post("http://localhost:5000/api/checkEmployerCode", { code: code }).then(res => {
+            console.log(res.data);
+            commit("changeCodeError", !res.data.codeExists);
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
+    addUser: ({commit, dispatch}, user) => {
+        axios.post("http://localhost:5000/api/createUser", user).then(res => {
+            const resUser = res.data;
+            console.log(resUser);
+
+            dispatch("setZodiacNumerologyAscendant", resUser);
+
+        }).catch(err => {
+            console.log(err)
+        })
         commit("addUser", user);
+    },
+
+    setNewDataset: ({commit, dispatch}, dataSet) => {
+        axios.post("http://localhost:5000/api/createDataset", dataSet).then(res => {
+            commit("setIsUserAdded", true);
+            console.log("gata cu crearea de useri");
+        }).catch(err => {
+            console.log(err)
+        })
+    },
+
+    // sets numerology, zodiac and its ascendant -> creates dataset and puts in database
+    setZodiacNumerologyAscendant: ({commit, dispatch}, user) => {
+        let userDataSet = {                
+            userId : user.id,
+            zodiac_id : null,
+            zodiac_ascendant_id : null,
+            numerology : null,
+            belbin_first_role : null,
+            belbin_second_role : null,
+            MBTI_role : null,
+            eneagram_first_role : null,
+            eneagram_second_role : null,
+            eneagram_third_role : null,
+        } 
+
+        // compute zodiac
+        axios.get("http://localhost:5000/api/getZodiac").then(res => {
+            const zodiacs = res.data;            
+
+            const userDate = user.birthDate;
+            const userTime = user.time;
+
+            let userZodiacId = null;
+
+            zodiacs.forEach(z => {
+                const dateFrom = z.from_date;
+                const dateTo = z.to_date;
+                const dateCheck = userDate;               
+
+                const d1 = dateFrom.split("/");
+                const d2 = dateTo.split("/");
+                const c = dateCheck.split("/");
+        
+                const from = new Date(2000, parseInt(d1[0])-1, d1[1]);  // -1 because months are from 0 to 11
+                const to   = new Date(2000, parseInt(d2[0])-1, d2[1]);
+                const check = new Date(2000, parseInt(c[1])-1, c[2]);
+
+                if(check >= from && check <= to){    
+                    console.log("INTRA AICI!");
+                    userZodiacId = z.id;
+                }
+            }); 
+
+            userDataSet.zodiac_id = userZodiacId;
+
+            //compute numerology
+            axios.get("http://localhost:5000/api/getNumerology").then(res => {
+                const numerologys = res.data;
+                console.log(numerologys);
+                const userDay = userDate.split("/")[2];
+                let numerologyId = null;
+
+                numerologys.forEach(n => {
+                    if(parseInt(n.day_of_month) === parseInt(userDay)){
+                        numerologyId = n.id
+                    }
+                });
+
+                userDataSet.numerology = numerologyId;
+
+                //check for ascendants
+                if (userTime !== "") {
+                    axios.post("http://localhost:5000/api/getAscendantByZodiac", { id: userZodiacId }).then(res => {
+                        const ascendants = res.data;                            
+
+                        console.log(ascendants);
+
+                        let userZodiacAscId = null;
+
+                        ascendants.forEach(z => {
+                            const splitUserTime = userTime.split(":");
+                            const time = z.time_range.split("-");
+                            const timeFrom = time[0].trim();
+                            const timeTo = time[1].trim();
+
+                            const splitTimeFrom = timeFrom.split(":");
+                            const splitTimeTo = timeTo.split(":");
+
+                            const fromTimeMins = parseInt(splitTimeFrom[0]) * 60 + parseInt(splitTimeFrom[1]);
+                            const toTimeMins = parseInt(splitTimeTo[0]) * 60 + parseInt(splitTimeTo[1]);
+                            const userTimeMins = parseInt(splitUserTime[0]) * 60 + parseInt(splitUserTime[1]);
+
+
+                            if(userTimeMins >= fromTimeMins && userTimeMins <= toTimeMins){    
+                                userZodiacAscId = z.id;
+                            }
+                        });
+
+                        userDataSet.zodiac_ascendant_id = userZodiacAscId;
+
+                        dispatch("setNewDataset", userDataSet);
+
+                    }).catch(err => {
+                        console.log(err)
+                    });
+                } else {
+                    dispatch("setNewDataset", userDataSet);
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        }).catch(err => {
+            console.log(err)
+        })
     },
 
     changeToast: ({commit}, toast) => {
@@ -292,7 +450,7 @@ export default {
         commit("testEnneagramCompleted");
     },
 
-    computeZodiac: ({state, commit}) => {  
+    computeZodiac: ({state, commit}, user) => {  
         let userDatasetExists = false;
         const userDate = state.loginUser.birthDate;
         const zodiac = state.zodiac;

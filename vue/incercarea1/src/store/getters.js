@@ -23,6 +23,9 @@ export default {
     getAllZodiacAscendants: (state) => state.zodiacAscendants,
     getTeams: (state) => state.teams,
 
+    userError: (state) => state.userError,
+    codeError: (state) => state.codeError,
+    isUserAdded: (state) => state.isUserAdded,
 
     getUserBelbinSequance: (state) => state.userBelbinSequance,
     getUserMbtiSequance: (state) => state.userMbtiSequance,

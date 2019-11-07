@@ -13,8 +13,8 @@
                   </b-form-group>
 
                   <b-form-group label="Username*">
-                    <b-input v-model="username" id="feedback-user"></b-input>
-                    <b-form-invalid-feedback :state="userError">
+                    <b-input v-model="username" @focusout="checkUsername" id="feedback-user"></b-input>
+                    <b-form-invalid-feedback :state="!userError">
                         This username already exists!. Please chose other unsername
                     </b-form-invalid-feedback>
                   </b-form-group>
@@ -31,8 +31,8 @@
                   </b-form-group>         
 
                   <b-form-group label="Employer's CODE*" v-if="role === 'employee'">
-                    <b-input v-model="code" id="code"></b-input>
-                    <b-form-invalid-feedback :state="userError">
+                    <b-input v-model="code" @focusout="checkCode" id="code"></b-input>
+                    <b-form-invalid-feedback :state="!codeError">
                         This code is invalid!
                     </b-form-invalid-feedback>
                   </b-form-group>             
@@ -48,7 +48,7 @@
             <b-col sm="4">
                 <b-jumbotron header="" lead="">          
 
-                  <b-form-group label="Birthdate" inline>
+                  <b-form-group label="Birthdate* (dd/MM/yyyy) & time of birth (HH:mm)" inline>
                     <b-form-select
                       class="mb-2 mr-sm-2 mb-sm-0"
                       :value="null"
@@ -112,6 +112,9 @@
 
                   <hr class="my-4">
                   <b-button variant="success" type="submit">Register</b-button>
+                  <b-form-invalid-feedback :state="!formIsInvalid">
+                        Form is not valid!
+                  </b-form-invalid-feedback>
                 </b-jumbotron>                    
             </b-col>
         </b-row>
@@ -141,8 +144,9 @@ export default {
         email: "",
 
         passError: true,
-        userError: true,
         formState: false,
+
+        formIsInvalid: false,
 
         dayOptions: ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12","13", "14", "15", "16","17", "18", "19", "20","21", "22", "23", "24", "23", "25", "26", "27", "28", "29", "30", "31"],
         day: "",
@@ -168,14 +172,29 @@ export default {
       }
     },
      computed: {
-      ...mapGetters(["getAllUsers"])
+      ...mapGetters(["getAllUsers", "userError", "codeError", "isUserAdded"])
+    },
+    watch: {
+      isUserAdded: function(val) {
+        this.userAdded();
+        this.setIsUserAdded(false);
+      }
     },
     methods: {
-       ...mapActions(["addUser", "changeToast"]),
+       ...mapActions(["addUser", "changeToast", "checkUsernameExists", "checkEmployerCode", "setIsUserAdded"]),
 
       checkPass() {
         this.passError = this.password === this.confirmPassword;
       },
+
+      checkUsername() {
+        this.checkUsernameExists(this.username);
+      },
+
+      checkCode() {
+        this.checkEmployerCode(this.code);
+      },
+
       checkUser(){
         const users = this.getAllUsers
         let userNamesArray = [];
@@ -186,16 +205,18 @@ export default {
 
         this.userError = userNamesArray.includes(this.username);
       },
-      checkForm(){  
-            this.formState = this.userError && this.passError;
 
+      checkForm(){  
             const date = this.year + "/" + this.month + "/" + this.day;
             const time = this.hour !== "" && this.minute !== "" ? this.hour + ":" + this.minute : ""; 
-            const id = this.getAllUsers.length + 1;
+
+            this.formState = !this.userError && this.passError && !this.codeError && date.length === 10 
+                              && this.password.length !== 0 && this.confirmPassword.length !== 0 && this.username.length !== 0
+                              && ( this.code.length !== 0 || this.company.length !== 0 );           
+
 
             if(this.formState){
               const user = {
-                id: id,
                 username: this.username,
                 password: this.password,
                 firstName: this.firstName,
@@ -209,20 +230,29 @@ export default {
                 time: time,
                 dataSet: "",
                 enabled: true,
-                role: this.role.toUpperCase()
+                selected: false,
+                assigned: false,
+                teamName: "",                
+                role: this.role.toUpperCase(),
+                position: ""
               }
 
-              this.addUser(user);
-              this.changeToast({
-                text: "Register successfull!",
-                title: "You have register successfully! All you have to do is log in now!",
-                autoHideDelay: 3000,
-                variant: "success",
-                solid: true,
-                toaster: "b-toaster-top-full",
-              });
-              this.$router.push({path: "/login"});
+              this.addUser(user);             
+            } else {
+              this.formIsInvalid = true;
             }
+        },
+
+        userAdded() {
+          this.changeToast({
+            text: "Register successfull!",
+            title: "You have register successfully! All you have to do is log in now!",
+            autoHideDelay: 3000,
+            variant: "success",
+            solid: true,
+            toaster: "b-toaster-top-full",
+          });
+          this.$router.push({path: "/login"});
         },
     }
   }

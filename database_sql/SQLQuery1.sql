@@ -12,7 +12,8 @@ CREATE TABLE [user] (
 	birth_date DATETIME NOT NULL,
 	data_set INT,
 	[enabled] BIT NOT NULL,
-	[role] VARCHAR(30)
+	[role] VARCHAR(30),
+	team VARCHAR(100)
 );
 
 
