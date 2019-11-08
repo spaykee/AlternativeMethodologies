@@ -30,8 +30,7 @@ router.post('/', (req, res) => {
                         return res.json({ msg : "passError" })
                     } else {
                         // all good
-
-                        let token = jwt.sign({ id: user.id}, 'baguvixmuiepsd');
+                        let token = jwt.sign({ id: user.id}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '10s'});
                         return res.json({ msg: "loginSuccess", token: token })
                     }
                 

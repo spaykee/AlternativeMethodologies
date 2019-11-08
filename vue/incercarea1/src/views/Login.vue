@@ -28,7 +28,6 @@
                 </b-col>
             </b-row>
         </b-container>    
-         <!-- <b-button variant="success" @click.prevent="makeToast('success', 'Title', 3000)" >test toast</b-button>    -->
     </div>
 </template>
 
@@ -53,7 +52,7 @@
             this.changeToast({
                 text: `Welcome ${this.username}!`,
                 title: "Loged in successfull!",
-                autoHideDelay: 5000,
+                autoHideDelay: 4000,
                 variant: "success",
                 solid: true,
                 toaster: "b-toaster-top-full"

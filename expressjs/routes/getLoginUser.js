@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 
     console.log(token);
 
-    jwt.verify(token, "baguvixmuiepsd", (error, decoded) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
         if (error) return res.json({msg: "unauthorized"})
 
         // token valid

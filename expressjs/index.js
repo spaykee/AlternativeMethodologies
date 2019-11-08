@@ -1,8 +1,7 @@
 const express = require("express");
 const cors = require('cors');
-const jwt = require("jsonwebtoken");
-
 const app = express();
+const dotenv = require('dotenv/config');
 
 var corsOptions = {
   origin: 'http://localhost:8080',
@@ -35,7 +34,7 @@ app.use("/api/createDataset", cors(corsOptions), require("./routes/dataset"));
 // creates new user
 app.use("/api/createUser", cors(corsOptions), require("./routes/user"));
 
-app.use("/api/getBelbinQuestions", cors(corsOptions), require("./routes/belbin"));
+app.use("/api/getBelbinQuestions", cors(corsOptions), require("./routes/belbin_question"));
 
 const PORT = process.env.PORT || 5000;
 
