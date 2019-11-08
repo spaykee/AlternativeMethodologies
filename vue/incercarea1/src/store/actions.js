@@ -26,6 +26,10 @@ export default {
 
     setLoginUser: ({commit}, token) => {
         axios.get("http://localhost:5000/api/getLoginUser", {headers: {token: token}}).then(res => {
+            if (typeof(res.data.msg) !== "undefined" && res.data.msg === "unauthorized") {
+                commit("login", {});
+                localStorage.clear();
+            }
             commit("login", res.data);
         }).catch(err => {
             console.log(err)

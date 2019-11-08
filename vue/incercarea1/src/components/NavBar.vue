@@ -78,6 +78,7 @@ import { mapActions } from 'vuex';
 export default {    
     mounted() {
         if (localStorage.getItem("token") !== null && Object.entries(this.getLoginUser).length === 0 && this.getLoginUser.constructor === Object) {
+            console.log("intra");
             this.setLoginUser(localStorage.getItem("token"));
         }
     },
