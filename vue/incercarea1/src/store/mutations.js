@@ -1,115 +1,113 @@
 export default {
-    login: (state, user) => {
-        state.loginUser = user;
-    },
-    logout: (state) => {
-        state.loginUser = {};
-    },
-    addUser: (state, user) => {
-        state.users.push(user);
-    },
+  login: (state, user) => {
+    state.loginUser = user;
+  },
+  logout: state => {
+    state.loginUser = {};
+  },
+  addUser: (state, user) => {
+    state.users.push(user);
+  },
 
-    changeUsernameError: (state, usernameExists) => {
-        state.userError = usernameExists;
-    },
+  changeUsernameError: (state, usernameExists) => {
+    state.userError = usernameExists;
+  },
 
-    changeCodeError: (state, codeExists) => {
-        state.codeError = codeExists;
-    },
+  changeCodeError: (state, codeExists) => {
+    state.codeError = codeExists;
+  },
 
-    changeloginUserError: (state, status) => {
-        state.loginUserError = status;
-    },
+  changeloginUserError: (state, status) => {
+    state.loginUserError = status;
+  },
 
-    changeloginPassError: (state, status) => {
-        state.loginPassError = status;
-    },
+  changeloginPassError: (state, status) => {
+    state.loginPassError = status;
+  },
 
-    setIsUserAdded: (state, isUserAdded) => {
-        state.isUserAdded = isUserAdded;
-    },    
+  setIsUserAdded: (state, isUserAdded) => {
+    state.isUserAdded = isUserAdded;
+  },
 
-    setLoginSuccess: (state, status) => {
-        state.loginSuccess = status;
-    },  
-    
-    setToken: (state, token) => {
-        state.token = token;
-    },
+  setLoginSuccess: (state, status) => {
+    state.loginSuccess = status;
+  },
 
-    updateUser: (state, user) => {
-        state.users.filter(su => su.id === user.id)[0] = user;
-    },
+  setToken: (state, token) => {
+    state.token = token;
+  },
 
-    setGlobalError (state, error) {
-        state.globalError = error;
-    },
-    setBeforeRouterPath (state, path) {
-        state.beforePath = path;
-    },
-    changeToast (state, toast) {
-        state.toast = toast;
-    },
+  updateUser: (state, user) => {
+    state.users.filter(su => su.id === user.id)[0] = user;
+  },
 
-    clearToaster: (state) => {
-        state.toast = {};
-    },
+  setGlobalError(state, error) {
+    state.globalError = error;
+  },
+  setBeforeRouterPath(state, path) {
+    state.beforePath = path;
+  },
+  changeToast(state, toast) {
+    state.toast = toast;
+  },
 
-    setUserBeblinSequance: (state) => {
-        state.userBelbinSequance++;
-    },
+  clearToaster: state => {
+    state.toast = {};
+  },
 
-    setUserMbtiSequance: (state) => {
-        state.userMbtiSequance++;
-    },
+  setUserBeblinSequance: state => {
+    state.userBelbinSequance++;
+  },
 
-    setUserEnneagramSequance: (state) => {
-        state.userEnneagramSequance++;
-    },
+  setUserMbtiSequance: state => {
+    state.userMbtiSequance++;
+  },
 
-    setUserDatasetSequance: (state) => {
-        state.userDataSetSequance++;
-    },
+  setUserEnneagramSequance: state => {
+    state.userEnneagramSequance++;
+  },
 
-    addUserBelbin: (state, userBelbin) => {
-        state.userBelbin.push(userBelbin);
-    },
+  setUserDatasetSequance: state => {
+    state.userDataSetSequance++;
+  },
 
-    addUserMbti: (state, userMbti) => {
-        state.userMbti.push(userMbti);
-    },
+  addUserBelbin: (state, userBelbin) => {
+    state.userBelbin.push(userBelbin);
+  },
 
-    addUserEnneagram: (state, userEnneagram) => {
-        state.userEnneagram.push(userEnneagram);
-    },
+  addUserMbti: (state, userMbti) => {
+    state.userMbti.push(userMbti);
+  },
 
-    updateUserDataSet: (state, userDataset) => {
-        state.userDataset.forEach(uds => {
-            if (uds.id === userDataset.id){ 
-                uds = userDataset;
-            }
-        });
-    },
+  addUserEnneagram: (state, userEnneagram) => {
+    state.userEnneagram.push(userEnneagram);
+  },
 
-    addUserDataSet: (state, userDataset) => {
-        state.userDataset.push(userDataset);
-    },
+  updateUserDataSet: (state, userDataset) => {
+    state.userDataset.forEach(uds => {
+      if (uds.id === userDataset.id) {
+        uds = userDataset;
+      }
+    });
+  },
 
-    testBelbinCompleted: (state) => {
-        state.belbinCompleted = true;
-    },
+  addUserDataSet: (state, userDataset) => {
+    state.userDataset.push(userDataset);
+  },
 
-    testMbtiCompleted: (state) => {
-        state.mbtiCompleted = true;
-    },
+  testBelbinCompleted: state => {
+    state.belbinCompleted = true;
+  },
 
-    testEnneagramCompleted: (state) => {
-        state.enneagramCompleted = true;
-    },
+  testMbtiCompleted: state => {
+    state.mbtiCompleted = true;
+  },
 
-    setNewTeam: (state, team) => {
-        state.teams.push(team);
-    },
+  testEnneagramCompleted: state => {
+    state.enneagramCompleted = true;
+  },
 
-    
-}
+  setNewTeam: (state, team) => {
+    state.teams.push(team);
+  }
+};

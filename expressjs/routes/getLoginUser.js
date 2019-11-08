@@ -6,10 +6,8 @@ const pool = require("../pool");
 router.get('/', (req, res) => {     
     const token = req.headers.token;
 
-    console.log(token);
-
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
-        if (error) return res.json({msg: "unauthorized"})
+        if (error) return res.status(401).json({msg: "unauthorized"})
 
         // token valid
         const sql = `SELECT * FROM user WHERE id = '${decoded.id}'`

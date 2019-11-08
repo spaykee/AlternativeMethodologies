@@ -1,8 +1,8 @@
 export default [
-    {
-        id : 1,
-        cluster : "",
-        value : "",
-        description : ""
-    }
-]
+  {
+    id: 1,
+    cluster: "",
+    value: "",
+    description: ""
+  }
+];

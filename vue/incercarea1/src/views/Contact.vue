@@ -1,16 +1,10 @@
-<template>
-    
-</template>
+<template> </template>
 
 <script>
 export default {
   name: "contact",
-  mounted() {    
-   
-  }  
+  mounted() {}
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

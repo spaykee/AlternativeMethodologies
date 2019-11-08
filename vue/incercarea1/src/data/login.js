@@ -1,5 +1,4 @@
-export default 
-// {
+export default // {
 //     id: 2,
 //     username: "user",
 //     password: "user",
@@ -36,23 +35,22 @@ export default
 // }
 
 {
-    id: 1,
-    username: "employer",
-    password: "employer",
-    firstName: "John",
-    lastName: "Doe",
-    code: "1",
-    employerCode: "",
-    company: "SC. Bere SRL.",
-    phone: "0782746382",
-    email: "emlpoyer@employer.com",
-    birthDate: "12/04/1990",
-    time: "10:10",
-    dataSet: "1",
-    enabled: true,
-    role: "EMPLOYER"
-}
-
+  id: 1,
+  username: "employer",
+  password: "employer",
+  firstName: "John",
+  lastName: "Doe",
+  code: "1",
+  employerCode: "",
+  company: "SC. Bere SRL.",
+  phone: "0782746382",
+  email: "emlpoyer@employer.com",
+  birthDate: "12/04/1990",
+  time: "10:10",
+  dataSet: "1",
+  enabled: true,
+  role: "EMPLOYER"
+};
 
 // {
 //     id: 3,

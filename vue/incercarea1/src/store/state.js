@@ -1,4 +1,4 @@
-import users from "@/data/users"
+import users from "@/data/users";
 import belbinAnswers from "@/data/belbinAnswers";
 import belbinQuestions from "@/data/belbinQuestions";
 import belbins from "@/data/belbins";
@@ -18,49 +18,48 @@ import zodiac from "@/data/zodiac";
 import zodiacAscendants from "@/data/zodiacAscendants";
 import teams from "@/data/teams";
 
-
 //import loginUser from "@/data/login";
 
 export default {
-    users,
-    loginUser: {},
-    globalError: "",
-    beforePath: "/",
-    toast: {},
+  users,
+  loginUser: {},
+  globalError: "",
+  beforePath: "/",
+  toast: {},
 
-    belbinAnswers,
-    belbinQuestions,
-    belbins,
-    enneagramAnswers,
-    enneagramQuestions,
-    enneagrams,
-    mbtiAnswers,
-    mbtiQuestions,
-    mbtis,
-    numerology,
-    parameter,
-    userBelbin,
-    userDataset,
-    userEnneagram,
-    userMbti,
-    zodiac,
-    zodiacAscendants,
-    teams,
+  belbinAnswers,
+  belbinQuestions,
+  belbins,
+  enneagramAnswers,
+  enneagramQuestions,
+  enneagrams,
+  mbtiAnswers,
+  mbtiQuestions,
+  mbtis,
+  numerology,
+  parameter,
+  userBelbin,
+  userDataset,
+  userEnneagram,
+  userMbti,
+  zodiac,
+  zodiacAscendants,
+  teams,
 
-    userBelbinSequance: 1,
-    userDataSetSequance: 1,
-    userMbtiSequance: 1,
-    userEnneagramSequance: 1,
+  userBelbinSequance: 1,
+  userDataSetSequance: 1,
+  userMbtiSequance: 1,
+  userEnneagramSequance: 1,
 
-    belbinCompleted: false,
-    mbtiCompleted: false,
-    enneagramCompleted: false,
+  belbinCompleted: false,
+  mbtiCompleted: false,
+  enneagramCompleted: false,
 
-    userError: false,
-    codeError: false,
-    isUserAdded: false,
-    loginUserError: false,
-    loginPassError: false,
-    loginSuccess: false,
-    token: "",
-}
+  userError: false,
+  codeError: false,
+  isUserAdded: false,
+  loginUserError: false,
+  loginPassError: false,
+  loginSuccess: false,
+  token: ""
+};

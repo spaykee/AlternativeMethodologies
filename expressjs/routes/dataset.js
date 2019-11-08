@@ -5,10 +5,6 @@ const pool = require("../pool");
 router.post('/', (req, res) => {  
     const dataSet = req.body;
 
-    // console.log("=======================================");
-    // console.log(req.body);
-    // console.log("=======================================");
-
     pool.getConnection((err, connection) => { 
         let sql = 'INSERT INTO user_data_set SET ?'
 

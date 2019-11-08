@@ -1,7 +1,9 @@
 "use strict";
 
-import Vue from 'vue';
+import Vue from "vue";
 import axios from "axios";
+
+import store from "../store/index";
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -22,6 +24,7 @@ _axios.interceptors.request.use(
     return config;
   },
   function(error) {
+    console.log(error);
     // Do something with request error
     return Promise.reject(error);
   }
@@ -30,6 +33,7 @@ _axios.interceptors.request.use(
 // Add a response interceptor
 _axios.interceptors.response.use(
   function(response) {
+    console.log(response.status);
     // Do something with response data
     return response;
   },
@@ -52,10 +56,10 @@ Plugin.install = function(Vue, options) {
       get() {
         return _axios;
       }
-    },
+    }
   });
 };
 
-Vue.use(Plugin)
+Vue.use(Plugin);
 
 export default Plugin;

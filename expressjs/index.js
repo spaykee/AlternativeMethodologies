@@ -31,6 +31,12 @@ app.use("/api/getAscendantByZodiac", cors(corsOptions), require("./routes/ascend
 // creates mew dataset
 app.use("/api/createDataset", cors(corsOptions), require("./routes/dataset"));
 
+// adds to user_belbin all his answers
+app.use("/api/addUserBelbin", cors(corsOptions), require("./routes/addUserBelbin"));
+
+// updates user_data_set for belbin
+app.use("/api/updateBelbinDataSet", cors(corsOptions), require("./routes/updateBelbinDataSet"));
+
 // creates new user
 app.use("/api/createUser", cors(corsOptions), require("./routes/user"));
 

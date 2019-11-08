@@ -8,26 +8,25 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 
-import NavBar from './components/NavBar.vue'
+import NavBar from "./components/NavBar.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     NavBar
   },
   methods: {
-    ...mapActions(["setLoginUser"]),
+    ...mapActions(["setLoginUser"])
   },
   mounted() {
     // if (localStorage.getItem("token") !== null) {
     //   this.setLoginUser(localStorage.getItem("token"));
     // }
   }
-}
+};
 </script>
-
 
 <style lang="scss">
 .content {
