@@ -50,6 +50,7 @@ export default {
   userDataSetSequance: 1,
   userMbtiSequance: 1,
   userEnneagramSequance: 1,
+  userMbtiRole: "",
 
   belbinCompleted: false,
   mbtiCompleted: false,

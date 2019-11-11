@@ -117,5 +117,9 @@ export default {
 
   setNewTeam: (state, team) => {
     state.teams.push(team);
+  },
+
+  setMbtiRole: (state, role) => {
+    state.userMbtiRole = role;
   }
 };

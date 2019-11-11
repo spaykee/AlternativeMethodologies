@@ -259,7 +259,7 @@ export default {
         headers: { token: localStorage.getItem("token") }
       })
       .then(res => {
-        dispatch("computeBelbinRole", userBelbinList)
+        dispatch("computeBelbinRole", userBelbinList);
       })
       .catch(err => {
         console.log(err);
@@ -268,8 +268,18 @@ export default {
     commit("addUserBelbin", userBelbinList);
   },
 
-  addUserMbti: ({ commit }, userMbti) => {
-    commit("addUserMbti", userMbti);
+  addUserMbti: ({ commit, dispatch }, userMbtiList) => {
+    axios
+      .post("http://localhost:5000/api/addUserMbti", userMbtiList, {
+        headers: { token: localStorage.getItem("token") }
+      })
+      .then(res => {
+        dispatch("computeMbtiType", userMbtiList);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    commit("addUserMbti", userMbtiList);
   },
 
   addUserEnneagram: ({ commit }, userEnneagram) => {
@@ -324,7 +334,7 @@ export default {
 
     const roles = {
       belbin_first_role: firstRoleId,
-      belbin_second_role: secondRoleId,
+      belbin_second_role: secondRoleId
     };
 
     dispatch("setBelbinUserDataSet", roles);
@@ -344,20 +354,19 @@ export default {
       .catch(err => {
         console.log(err);
       });
-
   },
 
-  computeMbtiType: ({ state, dispatch }) => {
-    const userMbtis = state.userMbti.filter(
-      um => um.userId === state.loginUser.id
-    );
+  computeMbtiType: ({ state, dispatch }, userMbtiList) => {
+    // const userMbtis = state.userMbti.filter(
+    //   um => um.userId === state.loginUser.id
+    // );
 
     let a = { E: 0, I: 0 };
     let b = { S: 0, N: 0 };
     let c = { T: 0, F: 0 };
     let d = { J: 0, P: 0 };
 
-    userMbtis.forEach(um => {
+    userMbtiList.forEach(um => {
       const umType = um.answerMbtiType;
 
       if (umType in a) {
@@ -389,39 +398,19 @@ export default {
     dispatch("setMbtiUserDataSet", role);
   },
 
-  setMbtiUserDataSet: ({ commit, state, dispatch }, role) => {
-    let userDatasetExists = false;
-
-    state.userDataset.forEach(uds => {
-      if (uds.userId === role.userId) {
-        userDatasetExists = true;
-
-        uds.MBTI_role = role.role;
-
-        commit("updateUserDataSet", uds);
-      }
-    });
-
-    if (!userDatasetExists) {
-      let userDataSet = {
-        id: state.userDataSetSequance,
-        userId: role.userId,
-        zodiac_id: null,
-        zodiac_ascendant_id: null,
-        numerology: null,
-        belbin_first_role: null,
-        belbin_second_role: null,
-        MBTI_role: role.role,
-        eneagram_first_role: null,
-        eneagram_second_role: null,
-        eneagram_third_role: null
-      };
-
-      commit("addUserDataSet", userDataSet);
-      dispatch("setUserDatasetSequance");
-    }
-
-    commit("testMbtiCompleted");
+  setMbtiUserDataSet: ({ commit }, role) => {
+    axios
+      .post("http://localhost:5000/api/updateMbtiDataSet", role, {
+        headers: { token: localStorage.getItem("token") }
+      })
+      .then(res => {
+        commit("testMbtiCompleted", true);
+        commit("setMbtiRole", role.role);
+        console.log(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
 
   computeEnneagramType: ({ state, dispatch }) => {
