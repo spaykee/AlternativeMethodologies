@@ -3,7 +3,7 @@
     <b-container class="bv-example-row">
       <b-row class="mb-3" id="info">
         <b-col sm="10" offset="1">
-          <b-card title="MBTI Personality Test" header-tag="" footer-tag="">
+          <b-card title="MBTI Personality Test" header-tag footer-tag>
             <b-card-text>
               <p>
                 The following test is designed to measure your MBTI Personality
@@ -25,17 +25,15 @@
 
       <b-row class="mb-3">
         <b-col sm="10" offset="1">
-          <b-card title="" header-tag="header" footer-tag="footer">
+          <b-card title header-tag="header" footer-tag="footer">
             <b-card-text>
               <b-row>
                 <b-col sm="6" v-for="(q, key) in questions" :key="key">
                   <b-form-group>
-                    <template slot="label"
-                      ><b>{{ key + 1 }})</b>
-                      <span style="color: #0e577f;">
-                        {{ q.questionText }}:</span
-                      ></template
-                    >
+                    <template slot="label">
+                      <b>{{ key + 1 }})</b>
+                      <span style="color: #0e577f;">{{ q.questionText }}:</span>
+                    </template>
                     <b-form-radio
                       class="ml-4"
                       @input="checkForm"
@@ -44,10 +42,13 @@
                       v-model="q.selectedAnswerId"
                       :name="'answer-' + key + '-' + 'j'"
                       :value="a.answerId"
-                      ><span class="pointer">{{
-                        a.answerText
-                      }}</span></b-form-radio
                     >
+                      <span class="pointer">
+                        {{
+                        a.answerText
+                        }}
+                      </span>
+                    </b-form-radio>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -58,21 +59,22 @@
 
       <b-row class="mb-3">
         <b-col sm="10" offset="1">
-          <b-card title="" header-tag="" footer-tag="">
+          <b-card title header-tag footer-tag>
             <b-card-text>
-              <b-button @click="resetForm" variant="warning float-left"
-                ><font-awesome-icon icon="undo-alt"></font-awesome-icon> Reset
-                Test</b-button
-              >
+              <b-button @click="resetForm" variant="warning float-left">
+                <font-awesome-icon icon="undo-alt"></font-awesome-icon>Reset
+                Test
+              </b-button>
               <b-button
                 @click="saveForm"
                 v-b-tooltip.hover
                 :title="!formValid ? 'You must answer all questions' : ''"
                 :disabled="!formValid"
                 variant="primary float-right"
-                ><font-awesome-icon icon="share-square"></font-awesome-icon> End
-                Test</b-button
               >
+                <font-awesome-icon icon="share-square"></font-awesome-icon>End
+                Test
+              </b-button>
             </b-card-text>
           </b-card>
         </b-col>
@@ -87,7 +89,8 @@
     >
       <div class="d-block text-center">
         <h3>
-          Your type is: <span class="testColor"> {{ mbtiRole }} </span>
+          Your type is:
+          <span class="testColor">{{ mbtiRole }}</span>
         </h3>
       </div>
       <b-button
@@ -96,24 +99,21 @@
         variant="outline-warning"
         block
         to="/testBelbin"
-        >Belbin</b-button
-      >
+      >Belbin</b-button>
       <b-button
         v-if="!this.getTestCompleted.mbti"
         class="mt-3"
         variant="outline-danger"
         block
         to="/testMbti"
-        >MBTI</b-button
-      >
+      >MBTI</b-button>
       <b-button
         v-if="!this.getTestCompleted.enneagram"
         class="mt-2"
         variant="outline-primary"
         block
         to="/testEnneagram"
-        >Enneagram</b-button
-      >
+      >Enneagram</b-button>
     </b-modal>
   </div>
 </template>
@@ -132,6 +132,12 @@ export default {
       componentKey: 0,
       mbtiRole: ""
     };
+  },
+  watch: {
+    getMbtiRole: function(val) {
+      this.mbtiRole = val;
+      this.$refs["my-modal"].show();
+    }
   },
   methods: {
     ...mapActions(["setUserMbtiSequance", "addUserMbti", "computeMbtiType"]),
@@ -168,25 +174,18 @@ export default {
     },
     saveForm() {
       if (this.formValid) {
+        let mbtiResults = [];
         this.questions.forEach((q, i) => {
           let um = {
-            id: this.getUserMbtiSequance,
-            userId: this.getLoginUser.id,
             questionId: q.questionId,
             answerId: q.selectedAnswerId,
             answerMbtiType: q.answers.filter(
               a => a.answerId === q.selectedAnswerId
             )[0].mbtiType
           };
-
-          this.addUserMbti(um);
-          this.setUserMbtiSequance();
+          mbtiResults.push(um);
         });
-
-        this.computeMbtiType();
-
-        this.mbtiRole = this.getMbtiRole;
-        this.$refs["my-modal"].show(); // todo aici sa nu apara testele deja date
+        this.addUserMbti(mbtiResults);
       }
     },
     checkForm() {

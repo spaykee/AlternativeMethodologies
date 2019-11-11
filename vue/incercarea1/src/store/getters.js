@@ -57,12 +57,7 @@ export default {
   },
 
   getMbtiRole: state => {
-    const loginUserId = state.loginUser.id;
-    const userDataSet = state.userDataset.filter(
-      ud => ud.userId === loginUserId
-    )[0];
-
-    return typeof userDataSet !== "undefined" ? userDataSet.MBTI_role : "";
+    return state.userMbtiRole;
   },
 
   getTestCompleted: state => {
