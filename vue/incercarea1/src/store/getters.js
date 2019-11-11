@@ -65,6 +65,8 @@ export default {
     return typeof userDataSet !== "undefined" ? userDataSet.MBTI_role : "";
   },
 
+  getBelbinRoles: state => state.belbinRoles,
+
   getTestCompleted: state => {
     return {
       belbin: state.belbinCompleted,

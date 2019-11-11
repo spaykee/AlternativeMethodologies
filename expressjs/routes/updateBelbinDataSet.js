@@ -7,8 +7,10 @@ router.post('/', (req, res) => {
     let roles = req.body;
     const token = req.headers.token;
 
+    console.log(req.body);
+
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
-        if (error) return res.status(401).json({msg: "unauthorized"})
+        if (error) return res.json({msg: "unauthorized"})
 
         // token valid
 
@@ -18,8 +20,14 @@ router.post('/', (req, res) => {
             connection.query(sql, [ roles.belbin_first_role, roles.belbin_second_role, decoded.id ], function(err, results) {
                 if (err) console.log(err)
 
-                connection.release();
-                return res.json({ msg: "totu ok" });
+                connection.query(`SELECT code, name from belbin WHERE id IN (?)`, [[ roles.belbin_first_role, roles.belbin_second_role ]], function(err, results) {
+                    if (err) console.log(err)
+
+                    connection.release();
+                    return res.json({ belbin_first_role: results[0].name, belbin_second_role: results[1].name});
+                });
+
+                
             });                       
         });
     });   

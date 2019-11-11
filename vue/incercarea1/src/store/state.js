@@ -61,5 +61,7 @@ export default {
   loginUserError: false,
   loginPassError: false,
   loginSuccess: false,
-  token: ""
+  token: "",
+
+  belbinRoles: {},
 };

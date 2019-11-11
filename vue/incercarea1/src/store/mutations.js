@@ -17,6 +17,14 @@ export default {
     state.codeError = codeExists;
   },
 
+  setBelbinTestCompleted: (state, status) => {
+    state.belbinCompleted = status;
+  },
+
+  setBelbinRoles: (state, roles) => {
+    state.belbinRoles = roles;
+  },
+
   changeloginUserError: (state, status) => {
     state.loginUserError = status;
   },

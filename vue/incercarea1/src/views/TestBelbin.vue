@@ -217,6 +217,14 @@ export default {
       });
     }
   },
+  watch: {
+    getTestCompleted: function(value) {
+      this.belbinFirstRole = this.getBelbinRoles.belbin_first_role;
+      this.belbinSecondRole = this.getBelbinRoles.belbin_second_role;
+
+      this.$refs['my-modal'].show();
+    }
+  },
   computed: {
     ...mapGetters([
       "getAllBelbinAnswers",

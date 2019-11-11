@@ -38,6 +38,8 @@ export default {
           res.data.msg === "unauthorized"
         ) {
           commit("login", {});
+          localStorage.removeItem("token");
+          console.log("macar instra aici?");
           localStorage.clear();
         }
         commit("login", res.data);
@@ -275,8 +277,6 @@ export default {
   },
 
   computeBelbinRole: ({ state, dispatch }, filteredUserBelbin) => {
-    console.log(filteredUserBelbin);
-
     let belbinScore = [0, 0, 0, 0, 0, 0, 0, 0]; // rezultatele inițiale fiecărei întrebări
     let belbinScoreObj = [
       { id: 1, score: 0 },
@@ -338,6 +338,8 @@ export default {
       })
       .then(res => {
         console.log(res.data);
+        commit("setBelbinTestCompleted", true);
+        commit("setBelbinRoles", res.data)
       })
       .catch(err => {
         console.log(err);
