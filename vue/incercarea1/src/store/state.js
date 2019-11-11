@@ -49,12 +49,7 @@ export default {
   userBelbinSequance: 1,
   userDataSetSequance: 1,
   userMbtiSequance: 1,
-  userEnneagramSequance: 1,
-  userMbtiRole: "",
-
-  belbinCompleted: false,
-  mbtiCompleted: false,
-  enneagramCompleted: false,
+  userEnneagramSequance: 1,    
 
   userError: false,
   codeError: false,
@@ -65,4 +60,10 @@ export default {
   token: "",
 
   belbinRoles: {},
+  enneagramRoles: {},
+  userMbtiRole: "",
+  
+  belbinCompleted: false,
+  mbtiCompleted: false,
+  enneagramCompleted: false,
 };

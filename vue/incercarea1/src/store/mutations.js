@@ -25,6 +25,10 @@ export default {
     state.belbinRoles = roles;
   },
 
+  setEnneagramRoles: (state, roles) => {
+    state.enneagramRoles = roles;
+  },
+
   changeloginUserError: (state, status) => {
     state.loginUserError = status;
   },

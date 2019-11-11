@@ -265,7 +265,7 @@ export default {
         console.log(err);
       });
 
-    commit("addUserBelbin", userBelbinList);
+    // commit("addUserBelbin", userBelbinList);
   },
 
   addUserMbti: ({ commit, dispatch }, userMbtiList) => {
@@ -279,14 +279,25 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    commit("addUserMbti", userMbtiList);
+    // commit("addUserMbti", userMbtiList);
   },
 
-  addUserEnneagram: ({ commit }, userEnneagram) => {
-    commit("addUserEnneagram", userEnneagram);
+  addUserEnneagram: ({ dispatch }, userEnneagramList) => {
+    console.log(localStorage.getItem("token"));
+    axios
+      .post("http://localhost:5000/api/addUserEnneagram", userEnneagramList, {
+        headers: { token: localStorage.getItem("token") }
+      })
+      .then(res => {
+        dispatch("computeEnneagramType", userEnneagramList);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+      // commit("addUserEnneagram", userEnneagramList);
   },
 
-  computeBelbinRole: ({ state, dispatch }, filteredUserBelbin) => {
+  computeBelbinRole: ({ dispatch }, filteredUserBelbin) => {
     let belbinScore = [0, 0, 0, 0, 0, 0, 0, 0]; // rezultatele inițiale fiecărei întrebări
     let belbinScoreObj = [
       { id: 1, score: 0 },
@@ -340,7 +351,7 @@ export default {
     dispatch("setBelbinUserDataSet", roles);
   },
 
-  setBelbinUserDataSet: ({ commit, state, dispatch }, roles) => {
+  setBelbinUserDataSet: ({ commit }, roles) => {
     console.log(roles);
     axios
       .post("http://localhost:5000/api/updateBelbinDataSet", roles, {
@@ -413,11 +424,7 @@ export default {
       });
   },
 
-  computeEnneagramType: ({ state, dispatch }) => {
-    const userEnneagram = state.userEnneagram.filter(
-      ue => ue.userId === state.loginUser.id
-    );
-    const enneagrams = state.enneagrams;
+  computeEnneagramType: ({ dispatch }, userEnneagram) => {
     let scoreObj = [];
     let firstRoleId = 0;
     let secondRoleId = 0;
@@ -457,49 +464,28 @@ export default {
     });
 
     const roles = {
-      firstRoleId: firstRoleId,
-      secondRoleId: secondRoleId,
-      thirdRoleId: thirdRoleId,
-      userId: state.loginUser.id
+      enneagram_first_role: firstRoleId,
+      enneagram_second_role: secondRoleId,
+      enneagram_third_role: thirdRoleId,
     };
 
     dispatch("setEnneagramUserDataSet", roles);
   },
 
-  setEnneagramUserDataSet: ({ commit, state }, roles) => {
-    let userDatasetExists = false;
-
-    state.userDataset.forEach(uds => {
-      if (uds.userId === roles.userId) {
-        userDatasetExists = true;
-
-        (uds.eneagram_first_role = roles.firstRoleId),
-          (uds.eneagram_second_role = roles.secondRoleId),
-          (uds.eneagram_third_role = roles.thirdRoleId),
-          commit("updateUserDataSet", uds);
-      }
-    });
-
-    if (!userDatasetExists) {
-      let userDataSet = {
-        id: state.userDataSetSequance,
-        userId: roles.userId,
-        zodiac_id: null,
-        zodiac_ascendant_id: null,
-        numerology: null,
-        belbin_first_role: null,
-        belbin_second_role: null,
-        MBTI_role: null,
-        eneagram_first_role: roles.firstRoleId,
-        eneagram_second_role: roles.secondRoleId,
-        eneagram_third_role: roles.thirdRoleId
-      };
-
-      commit("addUserDataSet", userDataSet);
-      commit("setUserDatasetSequance");
-    }
-
-    commit("testEnneagramCompleted");
+  setEnneagramUserDataSet: ({ commit }, roles) => {
+    console.log(roles);
+    axios
+      .post("http://localhost:5000/api/updateEnneagramDataSet", roles, {
+        headers: { token: localStorage.getItem("token") }
+      })
+      .then(res => {
+        console.log(res.data);
+        commit("testEnneagramCompleted", true);
+        commit("setEnneagramRoles", res.data)
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
 
   computeZodiac: ({ state, commit }, user) => {

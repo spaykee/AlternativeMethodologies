@@ -60,6 +60,8 @@ export default {
     return state.userMbtiRole;
   },
 
+  getEnneagramRoles: state => state.enneagramRoles,
+
   getBelbinRoles: state => state.belbinRoles,
 
   getTestCompleted: state => {

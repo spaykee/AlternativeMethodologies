@@ -58,11 +58,25 @@ app.use(
   require("./routes/addUserBelbin")
 );
 
+// adds to user_enneagram all his answers
+app.use(
+  "/api/addUserEnneagram",
+  cors(corsOptions),
+  require("./routes/addUserEnneagram")
+);
+
 // updates user_data_set for belbin
 app.use(
   "/api/updateBelbinDataSet",
   cors(corsOptions),
   require("./routes/updateBelbinDataSet")
+);
+
+// updates user_data_set for enneagram
+app.use(
+  "/api/updateEnneagramDataSet",
+  cors(corsOptions),
+  require("./routes/updateEnneagramDataSet")
 );
 
 // creates new user

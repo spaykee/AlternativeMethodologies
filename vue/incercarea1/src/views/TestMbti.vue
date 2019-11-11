@@ -270,5 +270,8 @@ export default {
 
 .pointer {
   cursor: pointer;
+  &:hover {
+    color: #1d5cbf;
+  }
 }
 </style>

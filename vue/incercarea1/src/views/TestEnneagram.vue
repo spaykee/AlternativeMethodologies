@@ -3,11 +3,7 @@
     <b-container class="bv-example-row">
       <b-row class="mb-3" id="info">
         <b-col sm="12">
-          <b-card
-            title="The Riso-Hudson Enneagram Type Indicator"
-            header-tag=""
-            footer-tag=""
-          >
+          <b-card title="The Riso-Hudson Enneagram Type Indicator" header-tag footer-tag>
             <b-card-text>
               <p>
                 The RHETI Sampler’s 36 questions are only a part of the full,
@@ -39,16 +35,16 @@
 
       <b-row class="mb-3">
         <b-col sm="12">
-          <b-card title="" header-tag="header" footer-tag="footer">
+          <b-card title header-tag="header" footer-tag="footer">
             <b-card-text>
               <b-row>
                 <b-col sm="6" v-for="(q, key) in questions" :key="key">
                   <b-form-group>
-                    <template slot="label"
-                      ><span style="color: #0e577f;">
-                        <b>{{ q.questionText }}.</b></span
-                      ></template
-                    >
+                    <template slot="label">
+                      <span style="color: #0e577f;">
+                        <b>{{ q.questionText }}.</b>
+                      </span>
+                    </template>
                     <b-form-radio
                       class="ml-4"
                       @input="checkForm"
@@ -70,21 +66,22 @@
 
       <b-row class="mb-3">
         <b-col sm="12">
-          <b-card title="" header-tag="" footer-tag="">
+          <b-card title header-tag footer-tag>
             <b-card-text>
-              <b-button @click="resetForm" variant="warning float-left"
-                ><font-awesome-icon icon="undo-alt"></font-awesome-icon> Reset
-                Test</b-button
-              >
+              <b-button @click="resetForm" variant="warning float-left">
+                <font-awesome-icon icon="undo-alt"></font-awesome-icon>Reset
+                Test
+              </b-button>
               <b-button
                 @click="saveForm"
                 v-b-tooltip.hover
                 :title="!formValid ? 'You must answer all questions' : ''"
                 :disabled="!formValid"
                 variant="primary float-right"
-                ><font-awesome-icon icon="share-square"></font-awesome-icon> End
-                Test</b-button
               >
+                <font-awesome-icon icon="share-square"></font-awesome-icon>End
+                Test
+              </b-button>
             </b-card-text>
           </b-card>
         </b-col>
@@ -94,38 +91,44 @@
     <b-modal
       ref="my-modal"
       hide-footer
-      header-bg-variant="danger"
+      header-bg-variant="info"
       title="Enneagram test completed successfully!"
     >
       <div class="d-block text-center">
         <h3>
-          Your type is: <span class="testColor"> {{ mbtiRole }} </span>
+          Your Enneagram first wing is:
+          <span class="testColor">{{ enneagram_first_role }}</span>
+        </h3>
+        <h3>
+          Your Enneagram second wing is:
+          <span class="testColor">{{ enneagram_second_role }}</span>
+        </h3>
+        <h3>
+          Your Enneagram third wing is:
+          <span class="testColor">{{ enneagram_third_role }}</span>
         </h3>
       </div>
       <b-button
         v-if="!this.getTestCompleted.belbin"
         class="mt-3"
-        variant="outline-warning"
+        variant="outline-success"
         block
         to="/testBelbin"
-        >Belbin</b-button
-      >
+      >Belbin</b-button>
       <b-button
         v-if="!this.getTestCompleted.mbti"
         class="mt-3"
-        variant="outline-danger"
+        variant="outline-warning"
         block
         to="/testMbti"
-        >MBTI</b-button
-      >
+      >MBTI</b-button>
       <b-button
         v-if="!this.getTestCompleted.enneagram"
         class="mt-2"
-        variant="outline-primary"
+        variant="outline-info"
         block
         to="/testEnneagram"
-        >Enneagram</b-button
-      >
+      >Enneagram</b-button>
     </b-modal>
   </div>
 </template>
@@ -142,12 +145,21 @@ export default {
       questions: [],
       clear: false,
       componentKey: 0,
-      mbtiRole: ""
+      enneagram_first_role: "",
+      enneagram_second_role: "",
+      enneagram_third_role: ""
     };
+  },
+  watch: {
+    getEnneagramRoles: function(val) {
+      this.enneagram_first_role = val.enneagram_first_role;
+      this.enneagram_second_role = val.enneagram_second_role;
+      this.enneagram_third_role = val.enneagram_third_role;
+      this.$refs["my-modal"].show(); // todo aici sa nu apara testele deja date
+    }
   },
   methods: {
     ...mapActions([
-      "setUserEnneagramSequance",
       "addUserEnneagram",
       "computeEnneagramType"
     ]),
@@ -184,10 +196,10 @@ export default {
     },
     saveForm() {
       if (this.formValid) {
+        let ueList = [];
+
         this.questions.forEach((q, i) => {
           let ue = {
-            id: this.getUserEnneagramSequance,
-            userId: this.getLoginUser.id,
             questionId: q.questionId,
             answerId: q.selectedAnswerId,
             answerEnneagramType: q.answers.filter(
@@ -195,16 +207,10 @@ export default {
             )[0].enneagramType
           };
 
-          this.addUserEnneagram(ue);
-          this.setUserEnneagramSequance();
+          ueList.push(ue);          
         });
 
-        this.computeEnneagramType();
-
-        console.log(this.questions);
-
-        this.mbtiRole = this.getMbtiRole;
-        this.$refs["my-modal"].show(); // todo aici sa nu apara testele deja date
+        this.addUserEnneagram(ueList);        
       }
     },
     checkForm() {
@@ -221,8 +227,8 @@ export default {
     ...mapGetters([
       "getAllEnneagramAnswers",
       "getAllEnneagramQuestions",
-      "getUserEnneagramSequance",
       "getLoginUser",
+      "getEnneagramRoles",
       "getTestCompleted"
     ])
   },
@@ -253,7 +259,7 @@ export default {
       this.questions.push(question);
     });
 
-    this.computeEnneagramType();
+    // this.computeEnneagramType();
   }
 };
 </script>
@@ -293,5 +299,8 @@ export default {
 
 .pointer {
   cursor: pointer;
+   &:hover {
+    color: #1d5cbf;
+  }
 }
 </style>
